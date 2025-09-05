@@ -6,34 +6,26 @@
 
 int main() {
     // Initialize the graph for routes
-    Graph graph = createGraph();
-    
-    // Load routes from data file
-    if (!loadRoutes(&graph, "data/routes.dat")) {
-        fprintf(stderr, "Error loading routes.\n");
-        return 1;
-    }
+    Graph graph;
+    initializeGraph(&graph);
+
+    // Example: Add stops and routes manually
+    addStop(&graph, "Stop A");
+    addStop(&graph, "Stop B");
+    addRoute(&graph, 0, 1, 50, 30);
 
     // Display available routes
-    printf("Available Routes:\n");
-    displayRoutes(&graph);
+    displayGraph(&graph);
 
-    // Ticket booking example
-    Ticket ticket;
-    if (bookTicket(&ticket, &graph)) {
-        printf("Ticket booked successfully!\n");
-    } else {
-        printf("Ticket booking failed.\n");
-    }
+    // Example: Ticket booking and cancellation (implement these if needed)
+    // Ticket ticket;
+    // if (book_ticket(&ticket, &graph)) {
+    //     printf("Ticket booked successfully!\n");
+    //     if (cancel_ticket(&ticket)) {
+    //         printf("Ticket cancelled successfully!\n");
+    //     }
+    // }
 
-    // Ticket management example
-    if (cancelTicket(&ticket)) {
-        printf("Ticket cancelled successfully!\n");
-    } else {
-        printf("Ticket cancellation failed.\n");
-    }
-
-    // Clean up resources
-    freeGraph(&graph);
+    system("pause");
     return 0;
 }

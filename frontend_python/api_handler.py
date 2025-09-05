@@ -1,38 +1,15 @@
-import requests
 import json
+import os
 
-class APIHandler:
-    def __init__(self, api_url):
-        self.api_url = api_url
-
-    def fetch_departure_times(self, route):
-        try:
-            response = requests.get(f"{self.api_url}/departures/{route}")
-            response.raise_for_status()
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching departure times: {e}")
-            return None
-
-    def fetch_arrival_times(self, route):
-        try:
-            response = requests.get(f"{self.api_url}/arrivals/{route}")
-            response.raise_for_status()
-            return response.json()
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching arrival times: {e}")
-            return None
-
-    def fetch_mock_data(self, mock_data_file):
-        try:
-            with open(mock_data_file, 'r') as file:
-                return json.load(file)
-        except FileNotFoundError:
-            print(f"Mock data file not found: {mock_data_file}")
-            return None
-
-# Example usage:
-# api_handler = APIHandler("http://example.com/api")
-# departures = api_handler.fetch_departure_times("route1")
-# arrivals = api_handler.fetch_arrival_times("route1")
-# mock_data = api_handler.fetch_mock_data("mock_data.json")
+def fetch_departure_arrival_times(route_id):
+    json_path = os.path.join(os.path.dirname(__file__), "mock_data.json")
+    with open(json_path, "r") as f:
+        data = json.load(f)
+    departures = data.get("mock_api_response", {}).get("data", {}).get("departures", [])
+    for dep in departures:
+        if dep["route_id"] == int(route_id):
+            return {
+                "departure": dep["departure_time"],
+                "arrival": dep["arrival_time"]
+            }
+    return {"departure": "N/A", "arrival": "N/A"}

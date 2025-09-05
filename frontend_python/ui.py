@@ -1,52 +1,35 @@
-import tkinter as tk
-from tkinter import messagebox
+from backend_bridge import add_stop, add_route, display_graph
 from api_handler import fetch_departure_arrival_times
-from backend_bridge import book_ticket, cancel_ticket, get_routes
 
-class BusTrainRouteFinderApp:
-    def __init__(self, master):
-        self.master = master
-        master.title("Bus and Train Route Finder")
-
-        self.label = tk.Label(master, text="Welcome to the Bus and Train Route Finder")
-        self.label.pack()
-
-        self.route_button = tk.Button(master, text="Find Routes", command=self.find_routes)
-        self.route_button.pack()
-
-        self.book_button = tk.Button(master, text="Book Ticket", command=self.book_ticket)
-        self.book_button.pack()
-
-        self.cancel_button = tk.Button(master, text="Cancel Ticket", command=self.cancel_ticket)
-        self.cancel_button.pack()
-
-        self.quit_button = tk.Button(master, text="Quit", command=master.quit)
-        self.quit_button.pack()
-
-    def find_routes(self):
-        routes = get_routes()
-        if routes:
-            messagebox.showinfo("Available Routes", "\n".join(routes))
+def main_menu():
+    while True:
+        print("\nBusTrainRouteFinder Menu")
+        print("1. Add Stop")
+        print("2. Add Route")
+        print("3. Display Graph")
+        print("4. Fetch Departure/Arrival Times")
+        print("5. Exit")
+        choice = input("Enter choice: ")
+        if choice == "1":
+            stop = input("Enter stop name: ")
+            add_stop(stop)
+        elif choice == "2":
+            start = input("Start stop ID: ")
+            end = input("End stop ID: ")
+            cost = input("Cost: ")
+            time = input("Time (min): ")
+            add_route(start, end, cost, time)
+        elif choice == "3":
+            display_graph()
+        elif choice == "4":
+            route_id = input("Route ID: ")
+            times = fetch_departure_arrival_times(route_id)
+            print(f"Departure: {times['departure']}, Arrival: {times['arrival']}")
+        elif choice == "5":
+            print("Exiting.")
+            break
         else:
-            messagebox.showwarning("No Routes", "No routes available.")
-
-    def book_ticket(self):
-        # Implement ticket booking logic here
-        ticket_info = book_ticket()
-        if ticket_info:
-            messagebox.showinfo("Ticket Booked", f"Ticket booked successfully: {ticket_info}")
-        else:
-            messagebox.showwarning("Booking Failed", "Ticket booking failed.")
-
-    def cancel_ticket(self):
-        # Implement ticket cancellation logic here
-        success = cancel_ticket()
-        if success:
-            messagebox.showinfo("Ticket Canceled", "Ticket canceled successfully.")
-        else:
-            messagebox.showwarning("Cancellation Failed", "Ticket cancellation failed.")
+            print("Invalid choice.")
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = BusTrainRouteFinderApp(root)
-    root.mainloop()
+    main_menu()

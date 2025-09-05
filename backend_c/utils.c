@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>      // <-- Add this line
 #include "utils.h"
+#include "graph.h"      // <-- Add this line
 
 // Function to validate if a string is a valid integer
 int is_valid_integer(const char *str) {
@@ -24,9 +26,9 @@ int read_routes_data(const char *filename, Route *routes, int max_routes) {
     }
 
     int count = 0;
-    while (count < max_routes && fscanf(file, "%s %s %f %d", 
-           routes[count].start, routes[count].end, &routes[count].cost, 
-           &routes[count].duration) == 4) {
+    while (count < max_routes && fscanf(file, "%d %d %d %d", 
+           &routes[count].start, &routes[count].end, &routes[count].cost, 
+           &routes[count].time) == 4) {
         count++;
     }
 
@@ -42,8 +44,8 @@ int write_routes_data(const char *filename, Route *routes, int count) {
     }
 
     for (int i = 0; i < count; i++) {
-        fprintf(file, "%s %s %.2f %d\n", routes[i].start, routes[i].end, 
-                routes[i].cost, routes[i].duration);
+        fprintf(file, "%d %d %d %d\n", routes[i].start, routes[i].end, 
+                routes[i].cost, routes[i].time);
     }
 
     fclose(file);
@@ -66,3 +68,5 @@ char* trim_whitespace(char *str) {
 
     return str;
 }
+
+// Add utility function implementations here if needed

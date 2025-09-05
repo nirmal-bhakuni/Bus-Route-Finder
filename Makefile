@@ -1,28 +1,69 @@
+########################################################################
+####################### Makefile Template ##############################
+########################################################################
+
+# Compiler settings - Can be customized.
 CC = gcc
-CFLAGS = -Wall -Wextra -g
-OBJ = backend_c/graph.o backend_c/ticket.o backend_c/management.o backend_c/utils.o backend_c/main.o
+CXXFLAGS = -std=c11 -Wall
+LDFLAGS = 
 
-all: bus_train_route_finder
+# Makefile settings - Can be customized.
+APPNAME = myapp
+EXT = .c
+SRCDIR = backend_c
+OBJDIR = backend_c
 
-bus_train_route_finder: $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
+############## Do not change anything from here downwards! #############
+SRC = $(wildcard $(SRCDIR)/*$(EXT))
+OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
+DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
+# UNIX-based OS variables & settings
+RM = rm
+DELOBJ = $(OBJ)
+# Windows OS variables & settings
+DEL = del
+EXE = .exe
+WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 
-backend_c/graph.o: backend_c/graph.c backend_c/graph.h
-	$(CC) $(CFLAGS) -c $< -o $@
+########################################################################
+####################### Targets beginning here #########################
+########################################################################
 
-backend_c/ticket.o: backend_c/ticket.c backend_c/ticket.h
-	$(CC) $(CFLAGS) -c $< -o $@
+all: $(APPNAME)
 
-backend_c/management.o: backend_c/management.c backend_c/management.h
-	$(CC) $(CFLAGS) -c $< -o $@
+# Builds the app
+$(APPNAME): $(OBJ)
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-backend_c/utils.o: backend_c/utils.c backend_c/utils.h
-	$(CC) $(CFLAGS) -c $< -o $@
+# Creates the dependecy rules
+%.d: $(SRCDIR)/%$(EXT)
+	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
 
-backend_c/main.o: backend_c/main.c
-	$(CC) $(CFLAGS) -c $< -o $@
+# Includes all .h files
+-include $(DEP)
 
+# Building rule for .o files and its .c/.cpp in combination with all .h
+$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
+	$(CC) $(CXXFLAGS) -o $@ -c $<
+
+################### Cleaning rules for Unix-based OS ###################
+# Cleans complete project
+.PHONY: clean
 clean:
-	rm -f $(OBJ) bus_train_route_finder
+	$(RM) $(DELOBJ) $(DEP) $(APPNAME)
 
-.PHONY: all clean
+# Cleans only all files with the extension .d
+.PHONY: cleandep
+cleandep:
+	$(RM) $(DEP)
+
+#################### Cleaning rules for Windows OS #####################
+# Cleans complete project
+.PHONY: cleanw
+cleanw:
+	$(DEL) $(WDELOBJ) $(DEP) $(APPNAME)$(EXE)
+
+# Cleans only all files with the extension .d
+.PHONY: cleandepw
+cleandepw:
+	$(DEL) $(DEP)

@@ -25,8 +25,8 @@ int add_to_waitlist(int ticket_id, const char *passenger_name) {
     return 0; // Success
 }
 
-int cancel_ticket(int ticket_id) {
-    // Logic to cancel a ticket
+bool cancel_ticket_by_id(int ticket_id) {
+     // Logic to cancel a ticket
     // This is a placeholder for actual cancellation logic
     printf("Ticket %d has been cancelled.\n", ticket_id);
     
@@ -40,8 +40,12 @@ int cancel_ticket(int ticket_id) {
         }
         waitlist_count--;
     }
-    return 0; // Success
+    return true;
 }
+
+
+   
+ 
 
 void print_waitlist() {
     printf("Current Waitlist:\n");
