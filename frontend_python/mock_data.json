@@ -1,0 +1,65 @@
+{
+  "routes": [
+    {
+      "route_id": 1,
+      "start": "Station A",
+      "end": "Station B",
+      "cost": 10.0,
+      "duration": "30 mins",
+      "stops": [
+        "Station A",
+        "Station C",
+        "Station D",
+        "Station B"
+      ]
+    },
+    {
+      "route_id": 2,
+      "start": "Station B",
+      "end": "Station C",
+      "cost": 15.0,
+      "duration": "45 mins",
+      "stops": [
+        "Station B",
+        "Station E",
+        "Station F",
+        "Station C"
+      ]
+    },
+    {
+      "route_id": 3,
+      "start": "Station A",
+      "end": "Station C",
+      "cost": 20.0,
+      "duration": "1 hour",
+      "stops": [
+        "Station A",
+        "Station G",
+        "Station H",
+        "Station C"
+      ]
+    }
+  ],
+  "mock_api_response": {
+    "status": "success",
+    "data": {
+      "departures": [
+        {
+          "route_id": 1,
+          "departure_time": "10:00 AM",
+          "arrival_time": "10:30 AM"
+        },
+        {
+          "route_id": 2,
+          "departure_time": "11:00 AM",
+          "arrival_time": "11:45 AM"
+        },
+        {
+          "route_id": 3,
+          "departure_time": "12:00 PM",
+          "arrival_time": "1:00 PM"
+        }
+      ]
+    }
+  }
+}
