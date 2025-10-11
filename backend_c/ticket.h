@@ -15,7 +15,6 @@ typedef struct {
     int id;
     char starting_point[MAX_NAME]; 
     char destination[MAX_NAME];
-    int distance;
     double cost;
     int duration;
     int totalSeats;
