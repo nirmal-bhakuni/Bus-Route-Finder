@@ -3,7 +3,7 @@
 #include <string.h>
 #include "ticket.h"
 
-static int ticketid=1000;
+static int next_ticket_id=1000;
 BookingList* create_booking_list() {
      
 // This function creates a new booking list. It's the first thing we must do!
