@@ -3,7 +3,7 @@
 #include <string.h>
 #include "ticket.h"
 
-static int next_ticket_id = 1000;
+static int next_ticket_id=1000;
 BookingList* create_booking_list() {
      
 // This function creates a new booking list. It's the first thing we must do!
@@ -95,8 +95,6 @@ BookingNode* search_booking(BookingList* bookings, int ticketId) {
     }
     return NULL;
 }
-
-
 
 // =================================
 // BOOKING FUNCTION
@@ -266,7 +264,7 @@ void display_seat_status(const Route* route) {
 
 
     printf("Seat Layout:\n");
-    printf("(LEGEND: [ F ] = FREE ||  [ B ] = BOOKED)\n\n");
+    printf("([ F ] = FREE ||  [ B ] = BOOKED)\n\n");
     printf("SEATING PLAN (Front to Back):\n");
 
     printf("======================================================\n");
@@ -303,3 +301,4 @@ void display_seat_status(const Route* route) {
     
     printf("======================================================\n");
 }
+
