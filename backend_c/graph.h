@@ -7,7 +7,7 @@
 
 #define MAX_STOPS 100
 #define MAX_NAME_LEN 50
-#define MAX_EDGES_PER_STOP 50
+#define MAX_EDGES_PER_STOP
 
 /* Edge (route) from one stop to another */
 typedef struct {
@@ -29,8 +29,9 @@ typedef struct {
     Stop stops[MAX_STOPS];
 } Graph;
 
-/* Initialize the graph to hold up to numStops (numStops ignored - static size) */
-void initGraph(int numStops);
+/* Initialize the graph to hold up to numStops (numStops ignored - static size)
+   Now accepts a pointer to the Graph to initialize. */
+void initGraph(Graph* g, int numStops);
 
 /* Add a stop with name to graph; returns true on success */
 bool addStop(Graph* g, char* stopName);

@@ -10,7 +10,7 @@
 
 /* Populate sample data: stops and routes */
 static void populateSampleGraph(Graph* g) {
-    initGraph(0);
+    initGraph(g, 0);
     addStop(g, "Central");
     addStop(g, "North");
     addStop(g, "East");
@@ -142,8 +142,9 @@ static void waitingMenu(void) {
 
 int main(void) {
     Graph g;
-    g.stopCount = 0;
     initTickets();
+    /* initialize graph explicitly */
+    initGraph(&g, 0);
     populateSampleGraph(&g);
 
     char username[50], password[50];

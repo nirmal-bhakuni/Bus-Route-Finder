@@ -6,10 +6,15 @@
 #include "graph.h"
 
 /* Initialize graph */
-void initGraph(int numStops) {
-    (void)numStops; /* parameter unused; array is static */
-    /* set stopCount to zero */
-    /* ...existing code... */
+void initGraph(Graph* g, int numStops) {
+    (void)numStops; /* static array; size parameter unused */
+    if (!g) return;
+    g->stopCount = 0;
+    /* clear names to be safe */
+    for (int i = 0; i < MAX_STOPS; i++) {
+        g->stops[i].name[0] = '\0';
+        g->stops[i].edgeCount = 0;
+    }
 }
 
 /* Helper: get index of stop by name, returns -1 if not found */
