@@ -1,72 +1,33 @@
+// Implementation of utilities.
+
 #include <stdio.h>
-#include <stdlib.h>
+#include <time.h>
 #include <string.h>
-#include <ctype.h>      // <-- Add this line
 #include "utils.h"
-#include "graph.h"      // <-- Add this line
 
-// Function to validate if a string is a valid integer
-int is_valid_integer(const char *str) {
-    if (str == NULL || *str == '\0') {
-        return 0;
-    }
-    for (size_t i = 0; i < strlen(str); i++) {
-        if (str[i] < '0' || str[i] > '9') {
-            return 0;
-        }
-    }
-    return 1;
+/* Clear screen (Windows) */
+void clearScreen(void) {
+    /* Use system call; works on Windows (cls) */
+    system("cls");
 }
 
-// Function to read routes data from a file
-int read_routes_data(const char *filename, Route *routes, int max_routes) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        return -1; // File could not be opened
-    }
-
-    int count = 0;
-    while (count < max_routes && fscanf(file, "%d %d %d %d", 
-           &routes[count].start, &routes[count].end, &routes[count].cost, 
-           &routes[count].time) == 4) {
-        count++;
-    }
-
-    fclose(file);
-    return count; // Return the number of routes read
+/* Delay in milliseconds using clock() */
+void delay(int milliseconds) {
+    if (milliseconds <= 0) return;
+    clock_t start = clock();
+    clock_t ms = (milliseconds * CLOCKS_PER_SEC) / 1000;
+    while (clock() - start < ms) { /* busy wait */ }
 }
 
-// Function to write routes data to a file
-int write_routes_data(const char *filename, Route *routes, int count) {
-    FILE *file = fopen(filename, "w");
-    if (file == NULL) {
-        return -1; // File could not be opened
+/* Convert ASCII letters to lowercase */
+void toLowerCase(char* str) {
+    if (!str) return;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] >= 'A' && str[i] <= 'Z') str[i] = (char)(str[i] - 'A' + 'a');
     }
-
-    for (int i = 0; i < count; i++) {
-        fprintf(file, "%d %d %d %d\n", routes[i].start, routes[i].end, 
-                routes[i].cost, routes[i].time);
-    }
-
-    fclose(file);
-    return 0; // Success
 }
 
-// Utility function to trim whitespace from a string
-char* trim_whitespace(char *str) {
-    char *end;
-
-    // Trim leading space
-    while (isspace((unsigned char)*str)) str++;
-
-    // Trim trailing space
-    end = str + strlen(str) - 1;
-    while (end > str && isspace((unsigned char)*end)) end--;
-
-    // Null terminate after the last non-space character
-    *(end + 1) = '\0';
-
-    return str;
+/* Print a simple header */
+void printHeader(char* title) {
+    printf("\n================ %s ================\n", title);
 }
-
-// Add utility function implementations here if needed

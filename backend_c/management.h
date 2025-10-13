@@ -1,12 +1,18 @@
+// Header for ticket management (waiting list) module.
+
 #ifndef MANAGEMENT_H
 #define MANAGEMENT_H
 
-#include <stdbool.h>
-#include "ticket.h"
+#define MAX_WAITLIST 50
+#define MAX_NAME_LEN 50
 
-bool add_to_waitlist(const char *name, int routeId);
-void display_waitlist();
-bool cancel_ticket_by_id(int ticketId, BookingList *bookings, RouteCollection *routes);
-void display_booking_history(const BookingList *bookings);
+/* Add a person to waiting list */
+void addToWaitingList(char* name, char* src, char* dest);
 
-#endif
+/* Try to process waiting list and allocate seats if available */
+void processWaitingList(void);
+
+/* Display current waiting list */
+void displayWaitingList(void);
+
+#endif /* MANAGEMENT_H */
