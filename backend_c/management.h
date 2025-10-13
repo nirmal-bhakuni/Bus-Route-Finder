@@ -2,8 +2,11 @@
 #define MANAGEMENT_H
 
 #include <stdbool.h>
+#include "ticket.h"
 
-// Function to cancel a ticket based on the ticket ID
-bool cancel_ticket_by_id(int ticket_id);
+bool add_to_waitlist(const char *name, int routeId);
+void display_waitlist();
+bool cancel_ticket_by_id(int ticketId, BookingList *bookings, RouteCollection *routes);
+void display_booking_history(const BookingList *bookings);
 
-#endif // MANAGEMENT_H
+#endif
