@@ -7,7 +7,7 @@
 
 #define MAX_STOPS 100
 #define MAX_NAME_LEN 50
-#define MAX_EDGES_PER_STOP
+#define MAX_EDGES_PER_STOP 50
 
 /* Edge (route) from one stop to another */
 typedef struct {
