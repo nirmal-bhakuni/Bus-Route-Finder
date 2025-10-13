@@ -380,8 +380,6 @@ void free_booking_list(BookingList* bookings) {
         return;
     }
     
-    printf("Processing full memory cleanup for the booking list...\n");
-    
     BookingNode* current = bookings->head;
     BookingNode* next; 
     
