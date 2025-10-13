@@ -114,9 +114,9 @@ bool cancel_ticket_by_id(int ticketId, BookingList *bookings, RouteCollection *r
         bool booked = book_ticket(&newTicket, routes, bookings);
 
         if (booked)
-            printf("🎟️ Waitlisted passenger %s successfully got a ticket!\n", nextInQueue.passengerName);
+            printf(" Waitlisted passenger %s successfully got a ticket!\n", nextInQueue.passengerName);
         else
-            printf("⚠️ Could not assign seat to %s.\n", nextInQueue.passengerName);
+            printf(" Could not assign seat to %s.\n", nextInQueue.passengerName);
 
         shift_waitlist();
     }
