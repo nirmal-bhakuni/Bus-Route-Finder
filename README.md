@@ -15,7 +15,6 @@ The project is organized into several directories:
 - **backend_c**: Contains the core logic implemented in C.
 - **frontend_python**: Contains the Python user interface.
 - **data**: Stores route data.
-- **docs**: Contains documentation and reports.
 - **tests**: Contains unit tests for various components.
 
 ## Setup Instructions
