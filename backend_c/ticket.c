@@ -302,3 +302,104 @@ void display_seat_status(const Route* route) {
     printf("======================================================\n");
 }
 
+
+
+// This function displays all bookings by traversing the whole linked list!
+
+void display_all_bookings(const BookingList* bookings, const RouteCollection* collection) {
+    
+    if (bookings == NULL || collection == NULL) {
+        printf("Error: Cannot display bookings. Bookings List or RouteCollection is NULL.\n");
+        return;
+    }
+    
+    //EDGE
+    if (bookings->head == NULL)
+     {
+        printf("\n========================================\n");
+        printf("The booking list is EMPTY! No records found.\n");
+        printf("========================================\n");
+
+        return;
+    }
+    
+
+    printf("\n========================================\n");
+    printf("          ALL BOOKING RECORDS             \n");
+    printf("========================================\n");
+    printf("Total Number of Bookings in the system: %d\n", bookings->totalBookings);
+    printf("========================================\n\n");
+    
+    
+    BookingNode* current = bookings->head;
+
+    int bookingNumber = 1;
+    
+    while (current != NULL) {
+  
+        const Route* route = &collection->routes[current->routeId];
+        
+        printf("--- Booking Record #%d ---\n", bookingNumber);
+        printf("Ticket ID:       %d (Unique)\n", current->ticketId);
+        printf("Passenger Name:  %s\n", current->passengerName);     
+        printf("Route:           %s -> %s\n", route->starting_point, route->destination);
+        printf("Seat Number:     %d\n", current->seatNumber);
+        
+        //status
+        if (current->isActive == true)
+         {
+            printf("Status:          ACTIVE (Confirmed!)\n");
+        }
+         else
+          {
+            printf("Status:          CANCELLED (Refund pending...)\n");
+        }
+        
+        printf("Ticket Price:    Rs. %.2f\n", route->cost);
+        printf("Distance:        %d km\n", route->distance);
+        printf("Duration:        %d minutes\n\n", route->duration);
+        
+       
+        current = current->next;
+        bookingNumber = bookingNumber + 1;
+    }
+    
+    printf("========================================\n");
+    printf("Successfully reached the end of the list.\n");
+    printf("========================================\n");
+
+}
+
+
+//freeing function 
+void free_booking_list(BookingList* bookings) {
+    
+    if (bookings == NULL) 
+    {
+        printf("Warning: The bookings list is already NULL. Nothing to free!\n");
+        return;
+    }
+    
+    printf("Processing full memory cleanup for the booking list...\n");
+    
+    BookingNode* current = bookings->head;
+    BookingNode* next; 
+    
+    int Count = 0;
+    
+    while (current != NULL)
+    {
+        next = current->next;
+
+        free(current);
+        Count = Count + 1;
+        
+        current = next;
+    }
+    
+    printf("Freed a total of %d booking records (good job!).\n",Count);
+    
+    free(bookings);
+
+    printf("Booking list memory cleanup COMPLETE!\n");
+}
