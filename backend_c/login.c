@@ -370,7 +370,7 @@ void deleteacc() // deletes an account from the records
         }
     }
 }
-int main() // the main menu function for login module
+int menu() // the main menu function for login module
 {
     int c;
     while(1)
