@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "graph.h"
+#include "utils.h"
 
 /* Initialize graph */
 void initGraph(Graph* g, int numStops) {
@@ -25,6 +26,67 @@ static int getStopIndex(const Graph* g, const char* name) {
     return -1;
 }
 
+/* Save graph into data/routes.txt (simple text format) */
+void saveGraph(Graph* g) {
+    if (!g) return;
+    FILE* f = openDataFile("routes.txt", "w");
+    if (!f) return;
+    /* Write stopCount */
+    fprintf(f, "%d\n", g->stopCount);
+    /* Write stop names */
+    for (int i = 0; i < g->stopCount; i++) {
+        fprintf(f, "%s\n", g->stops[i].name);
+    }
+    /* Write edges: for each stop, edgeCount then each edge as dest,cost,time */
+    for (int i = 0; i < g->stopCount; i++) {
+        fprintf(f, "%d\n", g->stops[i].edgeCount);
+        for (int j = 0; j < g->stops[i].edgeCount; j++) {
+            Edge* e = &g->stops[i].edges[j];
+            fprintf(f, "%d %d %d\n", e->dest, e->cost, e->time);
+        }
+    }
+    fclose(f);
+}
+
+/* Load graph from data/routes.txt; returns true if loaded */
+bool loadGraph(Graph* g) {
+    if (!g) return false;
+    FILE* f = openDataFile("routes.txt", "r");
+    if (!f) return false;
+    char line[256];
+    /* reset graph first */
+    initGraph(g, 0);
+    if (!fgets(line, sizeof(line), f)) { fclose(f); return false; }
+    int sc = atoi(line);
+    if (sc <= 0 || sc > MAX_STOPS) { fclose(f); return false; }
+    for (int i = 0; i < sc; i++) {
+        if (!fgets(line, sizeof(line), f)) break;
+        char *nl = strchr(line, '\n');
+        if (nl) *nl = '\0';
+        addStop(g, line);
+    }
+    for (int i = 0; i < g->stopCount; i++) {
+        if (!fgets(line, sizeof(line), f)) break;
+        int ec = atoi(line);
+        for (int j = 0; j < ec; j++) {
+            if (!fgets(line, sizeof(line), f)) break;
+            int dest, cost, time;
+            if (sscanf(line, "%d %d %d", &dest, &cost, &time) == 3) {
+                if (i >= 0 && i < g->stopCount && g->stopCount > dest && dest >= 0) {
+                    if (g->stops[i].edgeCount < MAX_EDGES_PER_STOP) {
+                        Edge* e = &g->stops[i].edges[g->stops[i].edgeCount++];
+                        e->dest = dest;
+                        e->cost = cost;
+                        e->time = time;
+                    }
+                }
+            }
+        }
+    }
+    fclose(f);
+    return true;
+}
+
 /* Add a stop by name */
 bool addStop(Graph* g, char* stopName) {
     if (!g || !stopName) return false;
@@ -35,6 +97,8 @@ bool addStop(Graph* g, char* stopName) {
     g->stops[g->stopCount].name[MAX_NAME_LEN - 1] = '\0';
     g->stops[g->stopCount].edgeCount = 0;
     g->stopCount++;
+    /* persist */
+    saveGraph(g);
     return true;
 }
 
@@ -49,6 +113,8 @@ bool addRoute(Graph* g, char* src, char* dest, int cost, int time) {
     e->dest = d;
     e->cost = cost;
     e->time = time;
+    /* persist */
+    saveGraph(g);
     return true;
 }
 

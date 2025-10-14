@@ -29,8 +29,7 @@ typedef struct {
     Stop stops[MAX_STOPS];
 } Graph;
 
-/* Initialize the graph to hold up to numStops (numStops ignored - static size)
-   Now accepts a pointer to the Graph to initialize. */
+/* Initialize the graph instance */
 void initGraph(Graph* g, int numStops);
 
 /* Add a stop with name to graph; returns true on success */
@@ -47,5 +46,11 @@ bool findRouteBFS(Graph* g, char* src, char* dest);
 
 /* Show nearby (directly connected) stops to given stopName */
 void showNearbyStops(Graph* g, char* stopName);
+
+/* Persist graph to data/routes.txt */
+void saveGraph(Graph* g);
+
+/* Load graph from data/routes.txt; returns true if loaded */
+bool loadGraph(Graph* g);
 
 #endif /* GRAPH_H */

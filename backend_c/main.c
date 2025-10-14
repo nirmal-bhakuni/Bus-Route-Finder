@@ -140,13 +140,27 @@ static void waitingMenu(void) {
     }
 }
 
+/* Save all data before exit */
+static void saveAllData(Graph* g) {
+    saveGraph(g);
+    saveWaitingList();
+    /* tickets auto-save on changes */
+}
+
+/* Register cleanup with atexit() */
+static void setupCleanup(Graph* g) {
+    static Graph* cleanup_graph = NULL;
+    cleanup_graph = g;
+    atexit(saveAllData);
+}
+
 int main(void) {
     Graph g;
-    initTickets();
-    /* initialize graph explicitly */
     initGraph(&g, 0);
-    populateSampleGraph(&g);
-
+    initTickets();
+    initWaitingList();
+    setupCleanup(&g);
+    
     char username[50], password[50];
     int choice;
 

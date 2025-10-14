@@ -1,7 +1,0 @@
-BusTrainRouteFinder
-1,Station A,Station B,10,30
-2,Station B,Station C,15,45
-3,Station A,Station C,20,60
-4,Station C,Station D,25,75
-5,Station B,Station D,30,90
-6,Station A,Station D,35,120

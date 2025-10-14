@@ -4,10 +4,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include "login.h"
+#include "utils.h"
 
 /* Helper: check if username already exists (ignores password) */
 static bool userExists(const char* username) {
-    FILE* f = fopen(USERS_FILE, "r");
+    FILE* f = openDataFile("users.txt", "r");
     if (!f) return false; /* no file -> no user yet */
     char line[256];
     bool found = false;
@@ -26,14 +27,13 @@ static bool userExists(const char* username) {
     return found;
 }
 
-/* Register a user by appending username:password to USERS_FILE */
+/* Register a user by appending username:password to users file in data/ */
 bool registerUser(char* username, char* password) {
     if (!username || !password) return false;
-    /* prevent very long names */
     if (strlen(username) == 0 || strlen(password) == 0) return false;
     /* check if username already exists */
     if (userExists(username)) return false;
-    FILE* f = fopen(USERS_FILE, "a");
+    FILE* f = openDataFile("users.txt", "a");
     if (!f) return false;
     fprintf(f, "%s:%s\n", username, password);
     fclose(f);
@@ -47,7 +47,7 @@ bool loginUser(char* username, char* password) {
 
 /* Verify credentials by scanning users file */
 bool verifyCredentials(char* username, char* password) {
-    FILE* f = fopen(USERS_FILE, "r");
+    FILE* f = openDataFile("users.txt", "r");
     if (!f) return false;
     char line[256];
     bool found = false;
