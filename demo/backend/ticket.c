@@ -6,7 +6,7 @@
 static int next_ticket_id=1000;
 BookingList* create_booking_list() {
      
-// This function creates a new booking list. It's the first thing we must do!
+
     BookingList* list = (BookingList*)malloc(sizeof(BookingList));
 
     if (list == NULL) {
@@ -19,8 +19,7 @@ BookingList* create_booking_list() {
     return list;
 }
 
-
-// This function searches through the seats array for the FIRST free seat (a '0').
+//searches the array
 int find_free_seat(const Route* route){
 if (route == NULL) {
         printf("Error:Invalid route!\n");
@@ -35,7 +34,7 @@ if (route == NULL) {
 }
 
 
-// This function is for counting how many seats are NOT taken ('0's).
+// counting how many seats are NOT taken
 int get_available_seats(const Route*route){
 
     if(route==NULL){
@@ -52,7 +51,7 @@ return c;
 }
 
 
-//Helper function to add a new booking to the linked list.
+
 void insert_booking(BookingList* bookings,int ticketId,int routeId,const char* passengerName,int seatNumber){
 
      printf("Creating a new BookingNode...\n");
@@ -77,7 +76,7 @@ void insert_booking(BookingList* bookings,int ticketId,int routeId,const char* p
 }
 
 
-// This function searches the linked list for a matching ticket ID.
+//searches the list for a matching ticket ID.
 BookingNode* search_booking(BookingList* bookings, int ticketId) {
 
     if (bookings == NULL) {
@@ -96,9 +95,9 @@ BookingNode* search_booking(BookingList* bookings, int ticketId) {
     return NULL;
 }
 
-// =================================
+
 // BOOKING FUNCTION
-// =================================
+
                              
 bool book_ticket(Ticket* ticket,RouteCollection* collection,BookingList* bookings){
 
@@ -136,15 +135,15 @@ printf("searching for available seats on routes %s to %s....\n",route->starting_
   
     printf("GREAT NEWS! Found a free seat: Seat number %d!\n", seatNumber);
     
-    route->seats[seatNumber - 1] = 1;  // 1 means now booked!
+    route->seats[seatNumber - 1] = 1;  
     printf("Seat is successfully marked as booked in the route's seat array.\n");
 
     
     ticket->id = next_ticket_id;
-    next_ticket_id = next_ticket_id + 1; // Increment for the next customer!
+    next_ticket_id = next_ticket_id + 1;
     ticket->isActive = true;
 
-    //Adding Booking To ll
+  
     printf("Finalizing booking and adding the record to the system's linked list...\n");
    
     insert_booking(bookings, ticket->id, ticket->routeId,
@@ -168,10 +167,7 @@ printf("searching for available seats on routes %s to %s....\n",route->starting_
 
 
 
-// =================================
 // The Cancellation Function
-// =================================
-
 
 bool cancel_ticket(Ticket* ticket, RouteCollection* collection, BookingList* bookings) {
 
@@ -304,7 +300,7 @@ void display_seat_status(const Route* route) {
 
 
 
-// This function displays all bookings by traversing the whole linked list!
+//  displays all bookings 
 
 void display_all_bookings(const BookingList* bookings, const RouteCollection* collection) {
     
