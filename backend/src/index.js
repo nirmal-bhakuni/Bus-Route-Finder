@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import db from "./config/db.js";
+import cppRoutes from "./routes/cppRoutes.js";
+
 
 import authRoutes from "./routes/auth.js";
 import routeRoutes from "./routes/routes.js";
@@ -15,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Base API routes
+app.use("/api/cpp", cppRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/routes", routeRoutes);
 app.use("/api/schedules", scheduleRoutes);
